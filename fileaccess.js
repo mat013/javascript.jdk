@@ -67,3 +67,39 @@ function grep(filename, patternString) {
         bufferedReader.close();
     }
 };
+
+function printlines(linenumber, pattern, lineBuffer) {
+    if(lineBuffer.size() > 0 && pattern.test(lineBuffer.get(0))) {
+        for(var i = 0; i < lineBuffer.size(); ++i) {
+            print(linenumber++ + ":" + lineBuffer.get(i));
+        }
+    }
+}
+
+// bug: lineCount is not 100% correct
+function grepLogline(filename, patternString, linePrefix) {
+    var imports = new JavaImporter(java.io, java.util);
+
+    with(imports) {
+        var bufferedReader = new BufferedReader(new FileReader(filename));
+
+        var lineBuffer = new ArrayList();
+
+        var pattern = new RegExp(patternString);
+        var prefixPattern = new RegExp(linePrefix);
+
+        var lineCount = 0;
+        for(var line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
+            lineCount++;
+            if(prefixPattern.test(line)) {
+		printlines(lineCount, pattern, lineBuffer);
+                lineBuffer.clear();
+            }
+            lineBuffer.add(line);
+        }
+        printlines(lineCount, pattern, lineBuffer);
+
+        bufferedReader.close();
+    }
+};
+

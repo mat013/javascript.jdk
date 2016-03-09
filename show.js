@@ -4,6 +4,7 @@ load("fileaccess.js");
 
 // var result = getFilesRecursively($ARG[0]);
 
+grepLogline("/home/mat013/data/javascript/javascript.jdk/myApp.log", "ERROR|done", "^\\d{4}")
 
 
 // grep($ARG[0], $ARG[1]);
